@@ -54,6 +54,12 @@
         <type>pom</type>
         <scope>import</scope>
       </dependency>
+      <dependency>
+        <groupId>io.fabric8</groupId>
+        <artifactId>fabric8-arquillian</artifactId>
+        <version>2.2.156</version>
+        <scope>test</scope>
+      </dependency>
     </dependencies>
   </dependencyManagement>
 
@@ -188,40 +194,19 @@
 
       <plugin>
         <groupId>io.fabric8</groupId>
-        <artifactId>fabric8-maven-plugin</artifactId>
-        <version>${fabric8.version}</version>
-        <executions>
-          <execution>
-            <id>json</id>
-            <phase>generate-resources</phase>
-            <goals>
-              <goal>json</goal>
-            </goals>
-          </execution>
-          <execution>
-            <id>attach</id>
-            <phase>package</phase>
-            <goals>
-              <goal>attach</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-
-      <plugin>
-        <groupId>io.fabric8</groupId>
         <artifactId>hawt-app-maven-plugin</artifactId>
         <version>${fabric8.version}</version>
         <executions>
           <execution>
             <id>hawt-app</id>
             <goals>
-<goal>build</goal>
-</goals>
+              <goal>build</goal>
+            </goals>
             <configuration>
               <javaMainClass>org.apache.camel.cdi.Main</javaMainClass>
             </configuration>
           </execution>
+          
         </executions>
       </plugin>
 
@@ -249,15 +234,34 @@
         </configuration>
       </plugin>
 
-      <!-- allows the route to be ran via 'mvn exec:java' -->
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>exec-maven-plugin</artifactId>
         <version>1.4.0</version>
         <configuration>
           <mainClass>org.apache.camel.cdi.Main</mainClass>
+          
         </configuration>
       </plugin>
+
+      <plugin>
+        <groupId>io.fabric8</groupId>
+        <artifactId>fabric8-maven-plugin</artifactId>
+        <version>${fabric8.version}</version>
+        <configuration>
+          <images>
+            <image>
+              <name>${project.artifactId}:${project.version}</name>
+              <build>
+                <from>jboss-fuse-6/fis-java-openshift:1.0</from>
+              </build>
+            </image>
+          </images>
+        </configuration>
+      </plugin>
+
+      <!-- allows the route to be ran via 'mvn exec:java' -->
+      
 
     </plugins>
   </build>
@@ -303,6 +307,23 @@
       </properties>
       <build>
         <defaultGoal>clean install docker:build fabric8:json fabric8:apply</defaultGoal>
+      </build>
+    </profile>
+    <profile>
+      <id>kit</id>
+      <activation />
+      <build>
+        <plugins>
+          <plugin>
+            <artifactId>maven-failsafe-plugin</artifactId>
+            <version>2.19</version>
+            <configuration>
+              <includes>
+                <include>**/*KT.*</include>
+              </includes>
+            </configuration>
+          </plugin>
+        </plugins>
       </build>
     </profile>
   </profiles>
