@@ -18,12 +18,9 @@ package com.folksam.policy2;
 import javax.inject.Inject;
 
 import org.apache.camel.Endpoint;
-import org.apache.camel.Exchange;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.cdi.ContextName;
 import org.apache.camel.cdi.Uri;
-import org.apache.camel.processor.aggregate.AbstractListAggregationStrategy;
-import org.apache.camel.processor.aggregate.AggregationStrategy;
 
 /**
  * Configures all our Camel routes, components, endpoints and beans
@@ -31,13 +28,13 @@ import org.apache.camel.processor.aggregate.AggregationStrategy;
 @ContextName("myJettyCamel")
 public class Policy extends RouteBuilder {
 
-    @Inject @Uri("jetty:http://0.0.0.0:8080/getPolicyList")
+    @Inject @Uri("jetty:http://0.0.0.0:8090/getPolicyList")
     private Endpoint jettyEndpoint;
     
-    @Inject @Uri("netty4-http:http://Anys-MacBook-Pro.local:9092/cxfcdi/customerservice/customers/123")
+    @Inject @Uri("netty4-http:http://policy-folksam.rhcloud.com/policys.xml") //8176532
 	private Endpoint getPolicyList2Endpoint;
 
-    @Inject @Uri("netty4-http:http://Anys-MacBook-Pro.local:9092/cxfcdi/customerservice/customers/123")
+    @Inject @Uri("netty4-http:http://policy-folksam.rhcloud.com/policys.xml") //4241442
 	private Endpoint getPolicyList1Endpoint;
 
     @Inject @Uri("log:output?showExchangePattern=false&showBodyType=false&showStreams=true")
