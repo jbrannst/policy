@@ -16,8 +16,13 @@ public class MyAggregationStrategyTest {
 
 	@Test
 	public void testAggregate() throws TransformerConfigurationException, ParserConfigurationException, SAXException, IOException, TransformerFactoryConfigurationError, TransformerException {
-		String policys = IOUtils.toString(getClass().getResourceAsStream("/policys.xml"));
-		Assert.assertEquals(policys, new MyAggregationStrategy().mergeByTag(policys , policys, "policys"));
+		String policys = getXmlFileAsString("/policys.xml");
+		String expected = getXmlFileAsString("/policys_result.xml");
+		Assert.assertEquals(expected, new MyAggregationStrategy().mergeByTag(policys , policys, "policys"));
+	}
+
+	private String getXmlFileAsString(String filename) throws IOException {
+		return IOUtils.toString(getClass().getResourceAsStream(filename));
 	}
 
 }
