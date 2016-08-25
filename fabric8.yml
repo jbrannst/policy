@@ -1,0 +1,12 @@
+---
+buildName: "policy"
+codeReview: true
+links:
+  Git: "http://gogs.vagrant.f8/gogsadmin/policy.git"
+  Job: "http://jenkins.vagrant.f8/job/policy"
+  Staging: "http://172.30.31.21:80/kubernetes/pods?namespace=default-staging"
+  Testing: "http://172.30.31.21:80/kubernetes/pods?namespace=default-testing"
+environments:
+  Testing: "default-testing"
+  Staging: "default-staging"
+useLocalFlow: true
