@@ -22,9 +22,11 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
-public class MyAggregationStrategy implements AggregationStrategy {
+public class MyPolicyAggregationStrategy implements AggregationStrategy {
 
-    @Override
+    private static final String CHILD_ELEMENT = "ns1:Policy";
+
+	@Override
     public Exchange aggregate(Exchange oldExchange, Exchange newExchange) {
         if (oldExchange == null) {
             return newExchange;
@@ -35,7 +37,7 @@ public class MyAggregationStrategy implements AggregationStrategy {
         
 
         try {
-            String xmlOutputStr = mergeByTag(oldBody, newBody, "policys");
+            String xmlOutputStr = mergeByTag(oldBody, newBody, CHILD_ELEMENT);
 
             // Set the new xml string as new body to the exchange
             oldExchange.getIn().setBody(xmlOutputStr);
@@ -49,6 +51,10 @@ public class MyAggregationStrategy implements AggregationStrategy {
         return oldExchange;
     }
 
+	/**
+	 * Merge two xml documents by extracting child elements of oldBody 
+	 * by tagname and inserting them into newBody
+	 */
 	protected String mergeByTag(String oldBody, String newBody, String tagname) throws ParserConfigurationException, SAXException,
 			IOException, TransformerConfigurationException, TransformerFactoryConfigurationError, TransformerException {
 		// Instantiate a document builder

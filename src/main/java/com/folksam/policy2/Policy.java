@@ -28,13 +28,13 @@ import org.apache.camel.cdi.Uri;
 @ContextName("myJettyCamel")
 public class Policy extends RouteBuilder {
 
-    @Inject @Uri("jetty:http://0.0.0.0:8090/getPolicyList")
+    @Inject @Uri("jetty:http://0.0.0.0:8080/getPolicyList")
     private Endpoint jettyEndpoint;
     
-    @Inject @Uri("netty4-http:http://policy-folksam.rhcloud.com/policys.xml") //8176532
+    @Inject @Uri("netty4-http:http://policy-folksam.rhcloud.com:80/policys.xml") //8176532
 	private Endpoint getPolicyList2Endpoint;
 
-    @Inject @Uri("netty4-http:http://policy-folksam.rhcloud.com/policys.xml") //4241442
+    @Inject @Uri("netty4-http:http://policy-folksam.rhcloud.com:80/policys.xml") //4241442
 	private Endpoint getPolicyList1Endpoint;
 
     @Inject @Uri("log:output?showExchangePattern=false&showBodyType=false&showStreams=true")
@@ -46,10 +46,12 @@ public class Policy extends RouteBuilder {
         // you can configure the route rule with Java DSL here
 
 		from(jettyEndpoint)
-        .multicast(new MyAggregator()).parallelProcessing()
-        .to(getPolicyList1Endpoint, getPolicyList2Endpoint)
-        .convertBodyTo(String.class).end()
-        .to(resultEndpoint);
+        	.multicast(new MyAggregator())
+        		.parallelProcessing()
+        	.to(getPolicyList1Endpoint, getPolicyList2Endpoint)
+        	.convertBodyTo(String.class)
+        		.end()
+        	.to(resultEndpoint);
 		
     }
 
