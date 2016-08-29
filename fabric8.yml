@@ -2,7 +2,7 @@
 buildName: "policy"
 codeReview: true
 links:
-  Git: "https://github.com/jbrannst/policy.git"
+  Git: "http://gogs.vagrant.f8/gogsadmin/policy.git"
   Job: "http://jenkins.vagrant.f8/job/policy"
   Staging: "http://172.30.26.161:80/kubernetes/pods?namespace=default-staging"
   Testing: "http://172.30.26.161:80/kubernetes/pods?namespace=default-testing"
